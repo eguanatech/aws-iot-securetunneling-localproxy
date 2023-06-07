@@ -9,7 +9,7 @@ namespace aws { namespace iot { namespace securedtunneling { namespace settings 
     using boost::property_tree::ptree;
     
     char const * const KEY_DEFAULT_BIND_ADDRESS = "tunneling.proxy.default_bind_address";
-    std::string DEFAULT_DEFAULT_BIND_ADDRESS = "localhost";
+    std::string DEFAULT_DEFAULT_BIND_ADDRESS = "0.0.0.0";
 
     char const * const KEY_PROXY_ENDPOINT_HOST_FORMAT = "tunneling.proxy.endpoint_format";
     std::string DEFAULT_PROXY_ENDPOINT_HOST_FORMAT = "data.tunneling.iot.%s.amazonaws.com";
