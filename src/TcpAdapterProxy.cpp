@@ -2102,7 +2102,7 @@ namespace aws
 
                 if (tac.adapter_config.bind_address.has_value())
                 {
-                    BOOST_LOG_SEV(log, debug) << "Resolving local address host: " << tac.adapter_config.bind_address.get();
+                    BOOST_LOG_SEV(log, info) << "Resolving local address host: " << tac.adapter_config.bind_address.get();
 
                     boost::system::error_code ec;
                     tcp::resolver::results_type results;
@@ -2121,12 +2121,12 @@ namespace aws
                     }
                     else
                     {
-                        BOOST_LOG_SEV(log, debug) << "Resolved bind IP: " << results->endpoint().address().to_string();
+                        BOOST_LOG_SEV(log, info) << "Resolved bind IP: " << results->endpoint().address().to_string();
 
                         tuple<string, string> endpoint_to_connect = tcp_adapter_proxy::get_host_and_port(endpoint, tac.adapter_config.bind_address.get());
                         std::string dst_host = std::get<0>(endpoint_to_connect);
                         std::string dst_port = std::get<1>(endpoint_to_connect);
-                        BOOST_LOG_SEV(log, trace) << "Resolving destination host: " << dst_host << " port: " << dst_port;
+                        BOOST_LOG_SEV(log, info) << "Resolving destination host: " << dst_host << " port: " << dst_port;
 
                         boost::system::error_code ec_1;
                         tcp::resolver::results_type results_1;
@@ -2139,7 +2139,7 @@ namespace aws
                     tuple<string, string> endpoint_to_connect = tcp_adapter_proxy::get_host_and_port(endpoint, LOCALHOST_IP);
                     std::string dst_host = std::get<0>(endpoint_to_connect);
                     std::string dst_port = std::get<1>(endpoint_to_connect);
-                    BOOST_LOG_SEV(log, trace) << "Resolving destination host: " << dst_host << " port: " << dst_port;
+                    BOOST_LOG_SEV(log, info) << "Resolving destination host: " << dst_host << " port: " << dst_port;
                     boost::system::error_code ec;
                     tcp::resolver::results_type results = client->resolver_.resolve(dst_host, dst_port, ec);
                     async_resolve_destination_for_connect(tac, retry_config, service_id, connection_id, ec, results);
