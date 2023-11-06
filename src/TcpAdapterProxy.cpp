@@ -506,8 +506,9 @@ namespace aws { namespace iot { namespace securedtunneling {
             BOOST_LOG_SEV(this->log, info) << "Disconnecting... remote endpoint not found";
         }
         connection->tcp_write_buffer_.consume(connection->tcp_write_buffer_.max_size());
-        connection->socket_.shutdown(boost::asio::ip::tcp::socket::shutdown_receive);
-        connection->socket_.close();
+        /* keep tunnel alive for ECI to reconnect */
+        // connection->socket_.shutdown(boost::asio::ip::tcp::socket::shutdown_receive);
+        // connection->socket_.close();
 
         connection->on_web_socket_write_buffer_drain_complete = [&, service_id, connection_id]()
         {
