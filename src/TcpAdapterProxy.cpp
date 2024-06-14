@@ -625,11 +625,21 @@ namespace aws { namespace iot { namespace securedtunneling {
             basic_retry_execute(log, retry_config, []() { throw std::runtime_error("Fail all the retries to get service ids before stream start. Exit."); });
             return;
         }
-        std::string src_listening_port = boost::lexical_cast<std::string>(tac.serviceId_to_tcp_server_map[service_id]->acceptor().local_endpoint().port());
-        if (tac.adapter_config.serviceId_to_endpoint_map.find(service_id) == tac.adapter_config.serviceId_to_endpoint_map.end() ||
-            tac.adapter_config.serviceId_to_endpoint_map.at(service_id) != src_listening_port)
-        {
-            throw std::runtime_error((boost::format("Receive incoming connection from non-configured port: %1%") % src_listening_port).str());
+        BOOST_LOG_SEV(log, error) << "TEST1" << tac.is_web_socket_reading << std::endl;
+        try {
+            std::string src_listening_port = boost::lexical_cast<std::string>(tac.serviceId_to_tcp_server_map[service_id]->acceptor().local_endpoint().port());
+            BOOST_LOG_SEV(log, error) << "TEST2";
+            if (tac.adapter_config.serviceId_to_endpoint_map.find(service_id) == tac.adapter_config.serviceId_to_endpoint_map.end() ||
+                tac.adapter_config.serviceId_to_endpoint_map.at(service_id) != src_listening_port)
+            {
+                throw std::runtime_error((boost::format("Receive incoming connection from non-configured port: %1%") % src_listening_port).str());
+            }
+        } catch (const boost::system::system_error& e) {
+            std::cerr << "System error: " << e.what() << std::endl;
+        } catch (const boost::bad_lexical_cast& e) {
+            std::cerr << "Bad lexical cast: " << e.what() << std::endl;
+        } catch (const std::exception& e) {
+            std::cerr << "Exception: " << e.what() << std::endl;
         }
 
         if(tac.serviceId_to_streamId_map.find(service_id) == tac.serviceId_to_streamId_map.end())
