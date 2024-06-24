@@ -9,7 +9,11 @@ namespace aws { namespace iot { namespace securedtunneling { namespace settings 
     using boost::property_tree::ptree;
     
     char const * const KEY_DEFAULT_BIND_ADDRESS = "tunneling.proxy.default_bind_address";
-    std::string DEFAULT_DEFAULT_BIND_ADDRESS = "localhost";
+    /*
+     * We need to listen to requests from ECI (Windows client from a different machine), so we can't limit the bind address to localhost.
+     * Proxy server has a static local IP address, so we can use it as the default bind address to limit the access to local LAN only.
+     */
+    std::string DEFAULT_DEFAULT_BIND_ADDRESS = "10.25.1.210";
 
     char const * const KEY_PROXY_ENDPOINT_HOST_FORMAT = "tunneling.proxy.endpoint_format";
     std::string DEFAULT_PROXY_ENDPOINT_HOST_FORMAT = "data.tunneling.iot.%s.amazonaws.com";
